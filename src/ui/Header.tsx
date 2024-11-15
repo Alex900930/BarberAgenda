@@ -1,14 +1,35 @@
-import  Button from "../components/Button/Button";
-
+import classnames from 'classnames';
+import Image from 'next/image';
 
 export default function Header() {
-  return (
-    <section className="pt-24 pb-12 bg-gradient-to-r from-black to-gray-800 text-white">
-        <div className="container mx-auto px-4 py-16 text-center">
-          <h1 className="text-5xl font-bold mb-6">Danilo&apos;s Barbearia Elite</h1>
-          <p className="text-xl mb-8">Estilo e Profissionalismo em Cada Corte</p>
-          <Button title="Agende seu Horário" />
-        </div>
+    return (
+        <section
+        className={classnames(
+          'pt-24 pb-12 text-white w-full',
+          {
+            'sm:h-[750px] h-[500px]': true,
+          }
+        )}
+        style={{
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+        }}
+      >
+        <Image
+          src="/assets/img/BannerBarberia.png"
+          alt="Banner Image"
+          layout="fill"
+          objectFit="cover"
+          className="sm:block hidden"
+        />
+        <Image
+          src="/assets/img/BanerBarberiaMobile.png"
+          alt="Banner Image"
+          layout="fill"
+          objectFit="cover"
+          className="sm:hidden block"
+        />
       </section>
-  )
-}
+    );
+  }
