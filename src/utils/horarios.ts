@@ -1,4 +1,18 @@
-export const horarios = [
-    "09:00", "10:00", "11:00", "12:00", 
-    "14:00", "15:00", "16:00", "17:00", "18:00"
-  ];
+// types.ts
+export interface TimeSlot {
+  time: string;
+  available: boolean;
+}
+
+// utils/horarios.ts
+export const horarios: TimeSlot[] = [
+  { time: "09:00", available: true },
+  { time: "10:00", available: true },
+  { time: "11:00", available: true },
+  { time: "12:00", available: true },
+  { time: "13:00", available: true },
+  { time: "14:00", available: true },
+  { time: "15:00", available: true },
+  { time: "16:00", available: true },
+  { time: "17:00", available: true },
+];

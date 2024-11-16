@@ -3,19 +3,31 @@
 
 import { DayPicker } from "react-day-picker";
 import { useState } from "react";
+import { pt } from "react-day-picker/locale";
 import "react-day-picker/style.css";
 
-export default function MyDatePicker() {
+interface MyDatePickerProps {
+  onDateSelect: (date: Date | undefined) => void;
+}
+
+export default function MyDatePicker({ onDateSelect }: MyDatePickerProps) {
   const [selected, setSelected] = useState<Date>();
+
+  const handleDateSelect = (date: Date | undefined) => {
+    setSelected(date);
+    onDateSelect(date);
+  };
 
   return (
     <DayPicker
-     className="w-full"
+      locale={pt}
+      className="w-full"
       mode="single"
       selected={selected}
-      onSelect={setSelected}
+      onSelect={handleDateSelect}
+      showOutsideDays
       footer={
-        selected ? `Selected: ${selected.toLocaleDateString()}` : "Escolha um dia."
+        selected ? `Data selecionada: ${selected.toLocaleDateString()}` : "Escolha um dia."
       }
     />
   );

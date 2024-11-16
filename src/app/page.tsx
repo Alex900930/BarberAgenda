@@ -1,4 +1,4 @@
-import Agende from "@/ui/Agende";
+import Agende from "@/components/Agende";
 import Footer from "@/ui/Footer";
 import Header from "@/ui/Header";
 import Localizacion from "@/ui/Localizacion";
