@@ -1,5 +1,3 @@
-import twilio from 'twilio';
-
 interface WhatsAppMessage {
   clientName: string;
   clientPhone: string;
@@ -7,55 +5,40 @@ interface WhatsAppMessage {
   time: string;
 }
 
-export async function sendWhatsAppMessage(to: string, message: string) {
-  const accountSid = process.env.TWILIO_ACCOUNT_SID;
-  const authToken = process.env.TWILIO_AUTH_TOKEN;
-  const fromNumber = process.env.TWILIO_WHATSAPP_NUMBER;
-
-  // Validación de variables de entorno
-  if (!accountSid || !authToken || !fromNumber) {
-    console.error('Missing Twilio credentials:', { accountSid, authToken, fromNumber });
-    return false;
+// Función para enviar mensaje de WhatsApp
+export function sendWhatsAppMessage(clientName: string, date: Date | string, time: string, clientPhone: string) {
+  // Asegurarse de que date sea un objeto Date
+  if (typeof date === 'string') {
+    date = new Date(date);
   }
 
-  // Formatear números de teléfono
-  const formattedTo = formatPhoneNumber(to);
-  
-  try {
-    const twilioClient = twilio(accountSid, authToken);
+  // Formatear la fecha para el mensaje
+  const formattedDate = date.toLocaleDateString('es-ES', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
     
-    console.log('Sending WhatsApp message:', {
-      to: formattedTo,
-      from: `whatsapp:${fromNumber}`,
-      messageLength: message.length
-    });
+  // Crear el mensaje
+  const message = `¡Hola! Soy ${clientName} y acabo de agendar una cita para el ${formattedDate} a las ${time}.`;
+  
+  // Crear el enlace de WhatsApp
+  const whatsappUrl = `https://wa.me/${clientPhone}?text=${encodeURIComponent(message)}`;
 
-    const result = await twilioClient.messages.create({
-      body: message,
-      from: `whatsapp:${fromNumber}`,
-      to: `whatsapp:${formattedTo}`
-    });
-
-    console.log('WhatsApp message sent successfully:', {
-      messageId: result.sid,
-      status: result.status
-    });
-
-    return true;
-  } catch (error) {
-    console.error('Error sending WhatsApp message:', {
-      error,
-      to: formattedTo,
-      messageLength: message.length
-    });
-    return false;
+  // Verificar si estamos en el cliente antes de intentar abrir una ventana
+  if (typeof window !== 'undefined') {
+    window.open(whatsappUrl, '_blank');
+  } else {
+    // Si estamos en el servidor, simplemente loguear el enlace
+    console.log('WhatsApp message link:', whatsappUrl);
   }
 }
 
 // Función para formatear números de teléfono
-function formatPhoneNumber(phone: string): string {
+function formatPhoneNumber(clientPhone: string): string {
   // Eliminar todos los caracteres no numéricos
-  let cleaned = phone.replace(/\D/g, '');
+  let cleaned = clientPhone.replace(/\D/g, '');
   
   // Asegurarse de que el número empiece con +
   if (!cleaned.startsWith('+')) {
@@ -67,7 +50,8 @@ function formatPhoneNumber(phone: string): string {
     cleaned = '+55' + cleaned;
   }
 
-  return cleaned;
+  // Eliminar el '+' para el enlace de WhatsApp
+  return cleaned.replace('+', '');
 }
 
 export function formatClientMessage({ clientName, date, time }: WhatsAppMessage) {
@@ -84,11 +68,16 @@ export function formatOwnerMessage({ clientName, clientPhone, date, time }: What
   return message;
 }
 
-function formatDate(date: Date) {
+function formatDate(date: Date | string) {
+  // Asegurarse de que date sea un objeto Date
+  if (typeof date === 'string') {
+    date = new Date(date);
+  }
+
   return new Intl.DateTimeFormat('es-ES', {
     weekday: 'long',
     year: 'numeric',
     month: 'long',
     day: 'numeric'
-  }).format(new Date(date));
+  }).format(date);
 }

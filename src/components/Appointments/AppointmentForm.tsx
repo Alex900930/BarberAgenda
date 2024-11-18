@@ -1,13 +1,19 @@
-"use client"
+"use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface AppointmentFormProps {
   selectedDate: Date;
   selectedTime: string;
-  onSuccess: () => void;
+  onSuccess: (data: { name: string; email:string; phoneNumber: string }) => void;
   onCancel: () => void;
 }
+
+const INITIAL_FORM_STATE = {
+  clientName: '',
+  clientEmail: '',
+  clientPhone: ''
+};
 
 export default function AppointmentForm({
   selectedDate,
@@ -15,46 +21,136 @@ export default function AppointmentForm({
   onSuccess,
   onCancel
 }: AppointmentFormProps) {
-  const [formData, setFormData] = useState({
-    clientName: '',
-    clientEmail: '',
-    clientPhone: ''
-  });
+  const [formData, setFormData] = useState(INITIAL_FORM_STATE);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [whatsappUrl, setWhatsappUrl] = useState<string | null>(null);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    setFormData(prev => ({ ...prev, [id]: value }));
+  };
+
+  const formatDate = (date: Date) => {
+    try {
+      return new Intl.DateTimeFormat('es-ES', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      }).format(date);
+    } catch (error) {
+      console.error('Error al formatear fecha:', error);
+      return '';
+    }
+  };
+
+  const formatPhoneNumber = (phone: string) => {
+    try {
+      console.log('Número de teléfono original:', phone);
+      
+      // Eliminar todos los caracteres no numéricos
+      let cleaned = phone.replace(/\D/g, '');
+      console.log('Número limpio:', cleaned);
+      
+      // Asegurarse de que tenga el código de país
+      if (!cleaned.startsWith('55')) {
+        cleaned = '55' + cleaned;
+      }
+      console.log('Número final formateado:', cleaned);
+      
+      return cleaned;
+    } catch (error) {
+      console.error('Error al formatear teléfono:', error);
+      return '';
+    }
+  };
+
+  const createClientMessage = () => {
+    try {
+      const formattedDate = formatDate(selectedDate);
+      const message = `¡Hola! He confirmado mi cita en la barbería:
+- Nombre: ${formData.clientName}
+- Fecha: ${formattedDate}
+- Hora: ${selectedTime}
+
+¡Gracias!`;
+      
+      console.log('Mensaje creado:', message);
+      return message;
+    } catch (error) {
+      console.error('Error al crear mensaje:', error);
+      return '';
+    }
+  };
+
+  const createWhatsAppUrl = () => {
+    try {
+      console.log('Creando URL de WhatsApp...');
+      console.log('Datos del formulario:', formData);
+      
+      const message = createClientMessage();
+      console.log('Mensaje generado:', message);
+      
+      const formattedPhone = formatPhoneNumber(formData.clientPhone);
+      console.log('Teléfono formateado:', formattedPhone);
+      
+      if (!message || !formattedPhone) {
+        throw new Error('Datos inválidos para crear URL de WhatsApp');
+      }
+
+      const url = `https://wa.me/${formattedPhone}?text=${encodeURIComponent(message)}`;
+      console.log('URL de WhatsApp generada:', url);
+      return url;
+    } catch (error) {
+      console.error('Error al crear URL de WhatsApp:', error);
+      return null;
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError('');
-
+  
     try {
-      const response = await fetch('/api/appointments', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          date: selectedDate.toISOString(), // Aseguramos que la fecha se envíe en formato ISO
-          time: selectedTime,
-          ...formData
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Error al crear la cita');
+      const url = createWhatsAppUrl();
+      if (url) {
+        console.log('Actualizando whatsappUrl...');
+        setWhatsappUrl(url); // Esto debe activar el useEffect
       }
+       
+      const formattedPhone = formatPhoneNumber(formData.clientPhone);
+      const name =`${formData.clientName}`;
+      const email = `${formData.clientEmail}`;
+      
+      onSuccess({ name, email, phoneNumber: formattedPhone });
+      
 
-      onSuccess();
     } catch (error) {
-      setError(error instanceof Error ? error.message : 'Error al crear la cita');
-      console.error('Error al crear la cita:', error);
+      const errorMessage = (error as Error).message || 'Error al crear la cita';
+     setError(errorMessage);
     } finally {
       setLoading(false);
     }
   };
+  
+  useEffect(() => {
+    console.log('useEffect ejecutado. whatsappUrl:', whatsappUrl);
+    
+    if (whatsappUrl) {
+      console.log('Abriendo WhatsApp inmediatamente...');
+      window.open(whatsappUrl, '_blank');
+      setWhatsappUrl(null); // Evitar múltiples intentos de abrir la misma URL
+    }
+    
+  }, [whatsappUrl]);
+  
+
+  // Agregamos un useEffect adicional para monitorear cambios en formData
+  useEffect(() => {
+    console.log('formData actualizado:', formData);
+  }, [formData]);
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -68,10 +164,7 @@ export default function AppointmentForm({
           required
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
           value={formData.clientName}
-          onChange={(e) => setFormData(prev => ({
-            ...prev,
-            clientName: e.target.value
-          }))}
+          onChange={handleInputChange}
         />
       </div>
 
@@ -82,13 +175,9 @@ export default function AppointmentForm({
         <input
           id="clientEmail"
           type="email"
-          required
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
           value={formData.clientEmail}
-          onChange={(e) => setFormData(prev => ({
-            ...prev,
-            clientEmail: e.target.value
-          }))}
+          onChange={handleInputChange}
         />
       </div>
 
@@ -98,14 +187,12 @@ export default function AppointmentForm({
         </label>
         <input
           id="clientPhone"
-          type="tel"
+          type="text"
           required
+          title="Ingrese un número de teléfono válido"
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
           value={formData.clientPhone}
-          onChange={(e) => setFormData(prev => ({
-            ...prev,
-            clientPhone: e.target.value
-          }))}
+          onChange={handleInputChange}
         />
       </div>
 

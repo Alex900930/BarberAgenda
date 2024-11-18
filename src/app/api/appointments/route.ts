@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import prisma from '@/libs/prisma';
+import { prisma } from '@/lib/prisma'; 
 import { sendWhatsAppMessage, formatClientMessage, formatOwnerMessage } from '@/services/whatsappService';
 
 export async function POST(request: Request) {
@@ -32,7 +32,7 @@ export async function POST(request: Request) {
         clientName,
         clientEmail,
         clientPhone,
-        status: 'confirmed'
+        // status: 'confirmed' // Esta línea ha sido eliminada
       },
     });
 

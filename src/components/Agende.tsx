@@ -45,12 +45,60 @@ export default function Agende() {
     setShowForm(true);
   };
 
-  const handleAppointmentSuccess = () => {
+  const handleAppointmentSuccess = async ({ name, email, phoneNumber }: { name: string; email:string, phoneNumber: string }) => {
     setShowForm(false);
     setSelectedTime(undefined);
     handleDateSelect(selectedDate);
-    alert('¡Cita agendada con éxito!');
-  };
+
+    // Llamada a la API para crear la cita
+    try {
+        const response = await fetch('/api/appointments', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                date: selectedDate!.toISOString(),
+                time: selectedTime,
+                clientName: name,
+                clientEmail: email,
+                clientPhone: phoneNumber,
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error('Error al crear la cita');
+        }
+
+        const appointmentData = await response.json();
+        console.log('Cita creada:', appointmentData);
+
+        // Mensaje de confirmación
+        alert('¡Cita agendada con éxito!');
+
+        // Genera el mensaje de WhatsApp
+        const message = encodeURIComponent(`
+            💈 *Confirmação de Agendamento na Barbearia* 💇‍♂️
+            
+            📋 *Detalhes do Agendamento:*
+            - *Nome:* ${name}
+            - *Data:* ${selectedDate?.toLocaleDateString('pt-BR')}
+            - *Horário:* ${selectedTime}
+            
+            ✅ Obrigado por nos escolher! Estamos ansiosos para te atender. 😊
+        `);
+
+        const whatsappLink = `https://wa.me/${phoneNumber}?text=${message}`;
+        console.log("mensaje final", whatsappLink);
+
+        // Abrir WhatsApp
+        window.open(whatsappLink, '_blank');
+
+    } catch (error) {
+        console.error('Error al crear la cita:', error);
+        alert('Hubo un problema al agendar la cita. Inténtalo de nuevo.');
+    }
+};
 
   return (
     <section id="agenda" className="sm:py-16 pt-[29rem] bg-white">
@@ -81,6 +129,7 @@ export default function Agende() {
                   onSuccess={handleAppointmentSuccess}
                   onCancel={() => setShowForm(false)}
                 />
+
               </div>
             ) : (
               <>
