@@ -35,7 +35,7 @@ export function sendWhatsAppMessage(clientName: string, date: Date | string, tim
   }
 }
 
-// Función para formatear números de teléfono
+/* // Función para formatear números de teléfono
 function formatPhoneNumber(clientPhone: string): string {
   // Eliminar todos los caracteres no numéricos
   let cleaned = clientPhone.replace(/\D/g, '');
@@ -52,7 +52,7 @@ function formatPhoneNumber(clientPhone: string): string {
 
   // Eliminar el '+' para el enlace de WhatsApp
   return cleaned.replace('+', '');
-}
+} */
 
 export function formatClientMessage({ clientName, date, time }: WhatsAppMessage) {
   const message = `¡Hola ${clientName}! Tu cita ha sido confirmada para el ${formatDate(date)} a las ${time}. Te esperamos en la barbería. Si necesitas cancelar o reprogramar, por favor contáctanos con anticipación.`;
