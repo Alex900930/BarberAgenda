@@ -5,7 +5,7 @@ import MyDatePicker from "@/components/ui/DaysPicker";
 import Button from '@/components/Button/Button';
 import AppointmentForm from '@/components/Appointments/AppointmentForm';
 import { TimeSlot } from '@/types/appointment';
-import { LoadingSpinner, LoadingSpinner2, LoadingSpinnerDots } from './Loading/LoadingSpinner';
+import { LoadingSpinner} from './Loading/LoadingSpinner';
 
 export default function Agende() {
   const [selectedDate, setSelectedDate] = useState<Date>();
