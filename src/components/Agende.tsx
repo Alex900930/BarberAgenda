@@ -5,6 +5,7 @@ import MyDatePicker from "@/components/ui/DaysPicker";
 import Button from '@/components/Button/Button';
 import AppointmentForm from '@/components/Appointments/AppointmentForm';
 import { TimeSlot } from '@/types/appointment';
+import { LoadingSpinner, LoadingSpinner2, LoadingSpinnerDots } from './Loading/LoadingSpinner';
 
 export default function Agende() {
   const [selectedDate, setSelectedDate] = useState<Date>();
@@ -114,7 +115,7 @@ export default function Agende() {
           <div className="bg-gray-50 p-6 rounded-lg shadow-lg">
             {loading ? (
               <div className="text-center py-8">
-                <p>Cargando horarios disponibles...</p>
+                <LoadingSpinner />
               </div>
             ) : error ? (
               <div className="text-center py-8 text-red-600">
