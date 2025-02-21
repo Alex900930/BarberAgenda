@@ -6,12 +6,8 @@ import Button from '@/components/Button/Button';
 import AppointmentForm from '@/components/Appointments/AppointmentForm';
 import { TimeSlot } from '@/types/appointment';
 import { LoadingSpinner} from './Loading/LoadingSpinner';
-import PaymentModal from './PaymentModal/PaymentModal';
+
 import {PaymentAppointmentDetails} from "../types/appointment";
-
-import {redirect} from "next/navigation";
-
-import api from "@/api";
 
 export default function Agende() {
 
@@ -23,7 +19,7 @@ export default function Agende() {
   const [error, setError] = useState('');
 
     // Estados existentes
-    const [showPaymentModal, setShowPaymentModal] = useState(false);
+  
     const [paymentAppointmentDetails, setPaymentAppointmentDetails] = useState<PaymentAppointmentDetails | null>(null);
 
   const handleDateSelect = async (date: Date | undefined) => {
@@ -70,7 +66,6 @@ export default function Agende() {
       clientEmail: email,
       clientPhone: phoneNumber,
     });
-    setShowPaymentModal(true);
 
   };
 
@@ -79,70 +74,7 @@ export default function Agende() {
   },[paymentAppointmentDetails]);
 
   // Función para manejar el pago exitoso
-  const handlePaymentSuccess = async () => {
-    
-    const url = await api.message.submit(message);
-
-    redirect(url);
-
-    try {
-
-      if (!paymentAppointmentDetails) {
-        throw new Error('No hay detalles de cita');
-      }
-
-      const formattedDate = paymentAppointmentDetails.date instanceof Date 
-      ? paymentAppointmentDetails.date.toLocaleDateString('pt-BR')
-      : paymentAppointmentDetails.date;
-
-      console.log("ESte es el paymentdetails que llego desde el modal", paymentAppointmentDetails);
-
-      const response = await fetch('/api/appointments', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...paymentAppointmentDetails,
-          paymentStatus: 'parcial'
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Error al crear la cita');
-      }
-
-      const appointmentData = await response.json();
-
-      console.log('Datos de la cita creada:', appointmentData);
-      
-      // Enviar mensaje de WhatsApp
-      const message = encodeURIComponent(`
-        💈 *Confirmação de Agendamento na Barbearia* 💇‍♂️
-        
-        📋 *Detalhes do Agendamento:*
-        - *Nome:* ${paymentAppointmentDetails.clientName}
-        - *Data:* ${formattedDate}
-        - *Horário:* ${paymentAppointmentDetails.time}
-        
-        ✅ Pagamento de reserva confirmado! 
-        Valor restante será pago no dia do serviço.
-      `);
-
-      const whatsappLink = `https://wa.me/${paymentAppointmentDetails.clientPhone}?text=${message}`;
-      window.open(whatsappLink, '_blank');
-
-      // Resetear estados
-      setShowPaymentModal(false);
-      setPaymentAppointmentDetails(null);
-      setShowForm(false);
-      setSelectedTime(undefined);
-
-    } catch (error) {
-      console.error('Error al crear la cita:', error);
-      alert('Hubo un problema al agendar la cita. Inténtalo de nuevo.');
-    }
-  };
+ 
 
  /*  const handleAppointmentSuccessOld = async () => {
     setShowForm(false);
@@ -253,14 +185,6 @@ export default function Agende() {
           </div>
         </div>
       </div>
-      {showPaymentModal && paymentAppointmentDetails && (
-  <PaymentModal 
-    isOpen={showPaymentModal}
-    onClose={() => setShowPaymentModal(false)}
-    onPaymentSuccess={handlePaymentSuccess}
-    appointmentDetails={paymentAppointmentDetails}
-  />
-)}
     </section>
   );
 }
