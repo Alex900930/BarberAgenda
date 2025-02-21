@@ -1,13 +1,11 @@
 "use client"
 
-import { useEffect, useState } from 'react';
+import {useState } from 'react';
 import MyDatePicker from "@/components/ui/DaysPicker";
 import Button from '@/components/Button/Button';
 import AppointmentForm from '@/components/Appointments/AppointmentForm';
 import { TimeSlot } from '@/types/appointment';
 import { LoadingSpinner} from './Loading/LoadingSpinner';
-
-import {PaymentAppointmentDetails} from "../types/appointment";
 
 export default function Agende() {
 
@@ -17,10 +15,6 @@ export default function Agende() {
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-
-    // Estados existentes
-  
-    const [paymentAppointmentDetails, setPaymentAppointmentDetails] = useState<PaymentAppointmentDetails | null>(null);
 
   const handleDateSelect = async (date: Date | undefined) => {
     setSelectedDate(date);
@@ -58,79 +52,8 @@ export default function Agende() {
 
       console.log("Informacion que llego del usuario", name, email, phoneNumber);
 
-    // En lugar de crear directamente la cita, abre el modal de pago
-    setPaymentAppointmentDetails({
-      date: selectedDate,
-      time: selectedTime,
-      clientName: name,
-      clientEmail: email,
-      clientPhone: phoneNumber,
-    });
-
   };
-
-  useEffect(() => {
-    console.log("Se actualizo el paymentdetails", paymentAppointmentDetails);
-  },[paymentAppointmentDetails]);
-
-  // Función para manejar el pago exitoso
  
-
- /*  const handleAppointmentSuccessOld = async () => {
-    setShowForm(false);
-    setSelectedTime(undefined);
-    handleDateSelect(selectedDate);
-
-    // Llamada a la API para crear la cita
-    try {
-        const response = await fetch('/api/appointments', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                date: selectedDate!.toISOString(),
-                time: selectedTime,
-                clientName: name,
-                clientEmail: email,
-                clientPhone: phoneNumber,
-            }),
-        });
-
-        if (!response.ok) {
-            throw new Error('Error al crear la cita');
-        }
-
-        const appointmentData = await response.json();
-        console.log('Cita creada:', appointmentData);
-
-        // Mensaje de confirmación
-        alert('Agendamento confirmado com sucesso!');
-
-        // Genera el mensaje de WhatsApp
-        const message = encodeURIComponent(`
-            💈 *Confirmação de Agendamento na Barbearia* 💇‍♂️
-            
-            📋 *Detalhes do Agendamento:*
-            - *Nome:* ${name}
-            - *Data:* ${selectedDate?.toLocaleDateString('pt-BR')}
-            - *Horário:* ${selectedTime}
-            
-            ✅ Obrigado por nos escolher! Estamos ansiosos para te atender. 😊
-        `);
-
-        const whatsappLink = `https://wa.me/${phoneNumber}?text=${message}`;
-        console.log("mensaje final", whatsappLink);
-
-        // Abrir WhatsApp
-        window.open(whatsappLink, '_blank');
-
-    } catch (error) {
-        console.error('Error al crear la cita:', error);
-        alert('Hubo un problema al agendar la cita. Inténtalo de nuevo.');
-    }
-}; */
-
   return (
     <section id="agenda" className="sm:py-16 pt-[29rem] bg-white">
       <div className="container px-4 mx-auto">

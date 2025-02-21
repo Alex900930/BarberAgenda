@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma'; 
-/* import { sendWhatsAppMessage, formatClientMessage, formatOwnerMessage } from '@/services/whatsappService'; */
 
 export async function POST(request: Request) {
   try {
@@ -38,41 +37,9 @@ export async function POST(request: Request) {
 
     console.log('Appointment created successfully:', appointment);
 
-    // Preparar los mensajes
-  /*   const messageData = {
-      clientName,
-      clientPhone,
-      date: new Date(date),
-      time
-    }; */
-
-/*     // Enviar mensaje al cliente
-    const clientMessageSent = await sendWhatsAppMessage(
-      clientPhone,
-      formatClientMessage(messageData)
-    );
- */
-    
-    // Enviar mensaje al dueño
- /*    const ownerPhone = process.env.OWNER_PHONE_NUMBER; */
-  /*   let ownerMessageSent = false; */
-    
-   /*  if (ownerPhone) {
-      ownerMessageSent = await sendWhatsAppMessage(
-        ownerPhone,
-        formatOwnerMessage(messageData)
-      );
-      console.log('Owner message status:', { sent: ownerMessageSent });
-    } else {
-      console.error('Owner phone number not configured');
-    } */
-
     return NextResponse.json({
       appointment,
-     /*  notifications: {
-        clientMessageSent,
-        ownerMessageSent
-      } */
+    
     }, { status: 201 });
   } catch (error) {
     console.error('Error in appointment creation:', error);
