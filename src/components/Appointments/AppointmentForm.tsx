@@ -116,8 +116,7 @@ export default function AppointmentForm({
     try {
       const url = createWhatsAppUrl();
       if (url) {
-        console.log('Actualizando whatsappUrl...');
-        setWhatsappUrl(url); // Esto debe activar el useEffect
+        setWhatsappUrl(url);
       }
        
       const formattedPhone = formatPhoneNumber(formData.clientPhone);

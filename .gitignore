@@ -42,3 +42,5 @@ next-env.d.ts
 # .gitignore
 *.db
 *.db-journal
+
+.vercel

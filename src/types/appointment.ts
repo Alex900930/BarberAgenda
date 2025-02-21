@@ -12,3 +12,13 @@ export interface Appointment {
     clientPhone: string;
     status: 'pending' | 'confirmed' | 'cancelled';
   }
+
+export  interface PaymentAppointmentDetails {
+    id?: string;
+    date:  Date | string | undefined;
+    time: string | undefined;
+    clientName: string;
+    clientEmail: string;
+    clientPhone: string;
+  }
+

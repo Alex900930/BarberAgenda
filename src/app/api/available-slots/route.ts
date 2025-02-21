@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma'; // Importación nombrada
+import { prisma } from '@/lib/prisma';
 
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
+    console.log("searchParams", searchParams);
     const dateStr = searchParams.get('date');
-
+      console.log("dateStr", dateStr);
     if (!dateStr) {
       return NextResponse.json(
         { error: 'Date parameter is required' },
@@ -14,8 +15,7 @@ export async function GET(request: NextRequest) {
     }
 
     const date = new Date(dateStr);
-    
-    // Obtener las citas para la fecha seleccionada
+    console.log("date", date);
     const appointments = await prisma.appointment.findMany({
       where: {
         date: {

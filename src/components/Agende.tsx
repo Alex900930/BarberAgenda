@@ -1,19 +1,30 @@
 "use client"
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import MyDatePicker from "@/components/ui/DaysPicker";
 import Button from '@/components/Button/Button';
 import AppointmentForm from '@/components/Appointments/AppointmentForm';
 import { TimeSlot } from '@/types/appointment';
 import { LoadingSpinner} from './Loading/LoadingSpinner';
+import PaymentModal from './PaymentModal/PaymentModal';
+import {PaymentAppointmentDetails} from "../types/appointment";
+
+import {redirect} from "next/navigation";
+
+import api from "@/api";
 
 export default function Agende() {
+
   const [selectedDate, setSelectedDate] = useState<Date>();
   const [selectedTime, setSelectedTime] = useState<string>();
   const [availableSlots, setAvailableSlots] = useState<TimeSlot[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+    // Estados existentes
+    const [showPaymentModal, setShowPaymentModal] = useState(false);
+    const [paymentAppointmentDetails, setPaymentAppointmentDetails] = useState<PaymentAppointmentDetails | null>(null);
 
   const handleDateSelect = async (date: Date | undefined) => {
     setSelectedDate(date);
@@ -25,6 +36,7 @@ export default function Agende() {
       setLoading(true);
       try {
         const response = await fetch(`/api/available-slots?date=${date.toISOString()}`);
+        console.log("response", response);
         if (!response.ok) {
           throw new Error('Error al obtener horarios disponibles');
         }
@@ -46,7 +58,93 @@ export default function Agende() {
     setShowForm(true);
   };
 
-  const handleAppointmentSuccess = async ({ name, email, phoneNumber }: { name: string; email:string, phoneNumber: string }) => {
+  const handleAppointmentSuccess = ({ name, email, phoneNumber }: { name: string; email:string, phoneNumber: string }) => {
+
+      console.log("Informacion que llego del usuario", name, email, phoneNumber);
+
+    // En lugar de crear directamente la cita, abre el modal de pago
+    setPaymentAppointmentDetails({
+      date: selectedDate,
+      time: selectedTime,
+      clientName: name,
+      clientEmail: email,
+      clientPhone: phoneNumber,
+    });
+    setShowPaymentModal(true);
+
+  };
+
+  useEffect(() => {
+    console.log("Se actualizo el paymentdetails", paymentAppointmentDetails);
+  },[paymentAppointmentDetails]);
+
+  // Función para manejar el pago exitoso
+  const handlePaymentSuccess = async () => {
+    
+    const url = await api.message.submit(message);
+
+    redirect(url);
+
+    try {
+
+      if (!paymentAppointmentDetails) {
+        throw new Error('No hay detalles de cita');
+      }
+
+      const formattedDate = paymentAppointmentDetails.date instanceof Date 
+      ? paymentAppointmentDetails.date.toLocaleDateString('pt-BR')
+      : paymentAppointmentDetails.date;
+
+      console.log("ESte es el paymentdetails que llego desde el modal", paymentAppointmentDetails);
+
+      const response = await fetch('/api/appointments', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...paymentAppointmentDetails,
+          paymentStatus: 'parcial'
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al crear la cita');
+      }
+
+      const appointmentData = await response.json();
+
+      console.log('Datos de la cita creada:', appointmentData);
+      
+      // Enviar mensaje de WhatsApp
+      const message = encodeURIComponent(`
+        💈 *Confirmação de Agendamento na Barbearia* 💇‍♂️
+        
+        📋 *Detalhes do Agendamento:*
+        - *Nome:* ${paymentAppointmentDetails.clientName}
+        - *Data:* ${formattedDate}
+        - *Horário:* ${paymentAppointmentDetails.time}
+        
+        ✅ Pagamento de reserva confirmado! 
+        Valor restante será pago no dia do serviço.
+      `);
+
+      const whatsappLink = `https://wa.me/${paymentAppointmentDetails.clientPhone}?text=${message}`;
+      window.open(whatsappLink, '_blank');
+
+      // Resetear estados
+      setShowPaymentModal(false);
+      setPaymentAppointmentDetails(null);
+      setShowForm(false);
+      setSelectedTime(undefined);
+
+    } catch (error) {
+      console.error('Error al crear la cita:', error);
+      alert('Hubo un problema al agendar la cita. Inténtalo de nuevo.');
+    }
+  };
+
+ /*  const handleAppointmentSuccessOld = async () => {
     setShowForm(false);
     setSelectedTime(undefined);
     handleDateSelect(selectedDate);
@@ -75,7 +173,7 @@ export default function Agende() {
         console.log('Cita creada:', appointmentData);
 
         // Mensaje de confirmación
-        alert('¡Cita agendada con éxito!');
+        alert('Agendamento confirmado com sucesso!');
 
         // Genera el mensaje de WhatsApp
         const message = encodeURIComponent(`
@@ -99,31 +197,31 @@ export default function Agende() {
         console.error('Error al crear la cita:', error);
         alert('Hubo un problema al agendar la cita. Inténtalo de nuevo.');
     }
-};
+}; */
 
   return (
     <section id="agenda" className="sm:py-16 pt-[29rem] bg-white">
-      <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-12">Agende seu Horário</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="bg-gray-50 p-6 rounded-lg shadow-lg">
-            <h3 className="text-xl font-semibold mb-4">Selecione uma Data</h3>
+      <div className="container px-4 mx-auto">
+        <h2 className="mb-12 text-3xl font-bold text-center">Agende seu Horário</h2>
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+          <div className="p-6 rounded-lg shadow-lg bg-gray-50">
+            <h3 className="mb-4 text-xl font-semibold">Selecione uma Data</h3>
             <div className="calendar-container">
               <MyDatePicker onDateSelect={handleDateSelect} />
             </div>
           </div>
-          <div className="bg-gray-50 p-6 rounded-lg shadow-lg">
+          <div className="p-6 rounded-lg shadow-lg bg-gray-50">
             {loading ? (
-              <div className="text-center py-8">
+              <div className="py-8 text-center">
                 <LoadingSpinner />
               </div>
             ) : error ? (
-              <div className="text-center py-8 text-red-600">
+              <div className="py-8 text-center text-red-600">
                 <p>{error}</p>
               </div>
             ) : showForm ? (
               <div>
-                <h3 className="text-xl font-semibold mb-4">Complete sus datos</h3>
+                <h3 className="mb-4 text-xl font-semibold">Complete sus datos</h3>
                 <AppointmentForm
                   selectedDate={selectedDate!}
                   selectedTime={selectedTime!}
@@ -134,7 +232,7 @@ export default function Agende() {
               </div>
             ) : (
               <>
-                <h3 className="text-xl font-semibold mb-4">
+                <h3 className="mb-4 text-xl font-semibold">
                   {selectedDate 
                     ? "Horários Disponíveis" 
                     : "Seleccione una fecha para ver horarios disponibles"}
@@ -155,6 +253,14 @@ export default function Agende() {
           </div>
         </div>
       </div>
+      {showPaymentModal && paymentAppointmentDetails && (
+  <PaymentModal 
+    isOpen={showPaymentModal}
+    onClose={() => setShowPaymentModal(false)}
+    onPaymentSuccess={handlePaymentSuccess}
+    appointmentDetails={paymentAppointmentDetails}
+  />
+)}
     </section>
   );
 }
