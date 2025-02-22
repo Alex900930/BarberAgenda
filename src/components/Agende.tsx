@@ -26,7 +26,7 @@ export default function Agende() {
       setLoading(true);
       try {
         const response = await fetch(`/api/available-slots?date=${date.toISOString()}`);
-        console.log("response", response);
+        
         if (!response.ok) {
           throw new Error('Error al obtener horarios disponibles');
         }
@@ -48,11 +48,54 @@ export default function Agende() {
     setShowForm(true);
   };
 
-  const handleAppointmentSuccess = ({ name, email, phoneNumber }: { name: string; email:string, phoneNumber: string }) => {
-
-      console.log("Informacion que llego del usuario", name, email, phoneNumber);
-
+  const handleAppointmentSuccess = async ({
+    name,
+    email,
+    phoneNumber,
+  }: {
+    name: string;
+    email: string;
+    phoneNumber: string;
+  }) => {
+    if (!selectedDate || !selectedTime) {
+      console.error("Fecha y hora no seleccionadas");
+      return;
+    }
+  
+    const appointmentData = {
+      date: selectedDate.toISOString().split("T")[0], // Formato YYYY-MM-DD
+      time: selectedTime,
+      clientName: name,
+      clientEmail: email,
+      clientPhone: phoneNumber,
+    };
+  
+    console.log("Enviando cita a la API:", appointmentData);
+  
+    try {
+      const response = await fetch("/api/appointments", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(appointmentData),
+      });
+  
+      if (!response.ok) {
+        throw new Error("Error al agendar la cita");
+      }
+  
+      const data = await response.json();
+      console.log("Cita creada con éxito:", data);
+  
+      // Puedes mostrar un mensaje de éxito aquí o redirigir al usuario
+      alert("Cita creada con éxito!");
+    } catch (error) {
+      console.error("Error al crear la cita:", error);
+      alert("Hubo un error al agendar la cita");
+    }
   };
+  
  
   return (
     <section id="agenda" className="sm:py-16 pt-[29rem] bg-white">

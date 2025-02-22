@@ -1,4 +1,11 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
+
+export default prisma;
+
+
+/* import { PrismaClient } from '@prisma/client'
 import { PrismaLibSQL } from '@prisma/adapter-libsql'
 import { createClient } from '@libsql/client'
 
@@ -8,4 +15,4 @@ const libsql = createClient({
 })
 
 const adapter = new PrismaLibSQL(libsql)
-export const prisma = process.env.NODE_ENV === 'production' ? new PrismaClient({ adapter }) : new PrismaClient();
+export const prisma = process.env.NODE_ENV === 'production' ? new PrismaClient({ adapter }) : new PrismaClient(); */

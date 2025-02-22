@@ -5,13 +5,13 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 generator client {
   provider = "prisma-client-js"
-  previewFeatures = ["driverAdapters"]
+  previewFeatures = ["postgresqlExtensions"]
 }
 
 model Appointment {

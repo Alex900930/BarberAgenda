@@ -20,16 +20,14 @@ export default function Header() {
         <Image
           src="/assets/img/BannerBarberia.png"
           alt="Banner Image"
-          layout="fill"
-          objectFit="cover"
-          className="sm:block hidden"
+          fill
+          className="hidden object-cover sm:block"
         />
         <Image
           src="/assets/img/BanerBarberiaMobile.png"
           alt="Banner Image"
-          layout="fill"
-          objectFit="cover"
-          className="sm:hidden block"
+          fill
+          className="block object-cover sm:hidden"
         />
       </section>
     );
