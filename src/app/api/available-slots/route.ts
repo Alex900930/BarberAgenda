@@ -29,6 +29,7 @@ export async function GET(request: NextRequest) {
         time: true,
       },
     });
+
     
 
     // Lista de horarios disponibles
