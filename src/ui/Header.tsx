@@ -6,7 +6,7 @@ export default function Header() {
     return (
         <section
         className={classnames(
-          'pt-24 pb-12 text-white w-full',
+          'pt-24 pb-12 text-white w-full bg-cover bg-center bg-no-repeat relative',
           {
             'sm:h-[750px] h-[500px]': true,
           }
