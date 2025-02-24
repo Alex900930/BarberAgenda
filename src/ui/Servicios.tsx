@@ -31,7 +31,7 @@ export default function HeroServices() {
         </video>
         <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50"></div>
         <div className="relative z-10 py-32 text-center text-white">
-          <h1 className="text-5xl font-bold">Bem-vindo ao Melhor Corte</h1>
+          <h1 className="font-serif text-5xl font-bold">Bem-vindo ao Melhor Corte</h1>
           <p className="mt-4 text-xl">Transforme seu estilo com os nossos serviços</p>
         </div>
       </section>
@@ -39,7 +39,7 @@ export default function HeroServices() {
       {/* Servicios Section */}
       <section id="servicos" className="py-16 bg-gray-900">
         <div className="container px-4 mx-auto">
-          <h2 className="mb-12 text-3xl font-bold text-center text-white">Nossos Serviços</h2>
+          <h2 className="mb-12 font-serif text-3xl font-bold text-center text-white">Nossos Serviços</h2>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
             {servicios.map((servico, index) => (
               <div

@@ -120,7 +120,7 @@ export default function Agende() {
 <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
 
 <div className="p-6 rounded-lg shadow-lg bg-gray-50">
-    <h3 className="mb-4 text-xl font-semibold text-gray-800">Escolha uma Data</h3>
+    <h3 className="mb-4 font-serif text-xl font-semibold text-gray-800">Escolha uma Data</h3>
     <div className="calendar-container">
       <MyDatePicker onDateSelect={handleDateSelect} />
     </div>
@@ -137,7 +137,7 @@ export default function Agende() {
       </div>
     ) : showForm ? (
       <div>
-        <h3 className="mb-4 text-xl font-semibold text-gray-800">
+        <h3 className="mb-4 font-serif text-xl font-semibold text-gray-800">
           Complete seus Dados
         </h3>
         <AppointmentForm
@@ -149,7 +149,7 @@ export default function Agende() {
       </div>
     ) : (
       <>
-        <h3 className="mb-4 text-xl font-semibold text-gray-800">
+        <h3 className="mb-4 font-serif text-xl font-semibold text-gray-800">
           {selectedDate
             ? "Horários Disponíveis"
             : "Selecione uma data para ver os horários disponíveis"}

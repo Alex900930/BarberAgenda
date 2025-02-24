@@ -15,7 +15,7 @@ export default function Localizacao() {
             >
                <section id="localizacao" className="py-16 bg-white">
       <div className="container px-6 mx-auto">
-        <h2 className="mb-12 text-4xl font-bold text-center text-gray-800 font-poppins">
+        <h2 className="mb-12 font-serif text-4xl font-bold text-center text-gray-800 font-poppins">
           Nossa Localização 📍
         </h2>
         <div className="max-w-2xl p-8 mx-auto rounded-lg shadow-lg bg-gray-50">
