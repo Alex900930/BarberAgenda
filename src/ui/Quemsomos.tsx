@@ -13,7 +13,7 @@ export default function QuemSomos() {
                     ease: [0, 0.71, 0.2, 1.01],
                 }}
             >
-               <section id="quemsomos" className="py-16 bg-gray-100">
+               <section id="quemsomos" className="py-16 bg-gradient-to-b from-white via-[#F8F9FA] to-[#DDE1E7]">
       <div className="container px-6 mx-auto">
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-2">
           {/* Imagen que ocupa 2 columnas en pantallas grandes */}

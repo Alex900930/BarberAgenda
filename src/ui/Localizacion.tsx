@@ -13,7 +13,7 @@ export default function Localizacao() {
                     ease: [0, 0.71, 0.2, 1.01],
                 }}
             >
-               <section id="localizacao" className="py-16 bg-white">
+               <section id="localizacao" className="py-16 bg-gradient-to-b from-white via-[#F8F9FA] to-[#DDE1E7]">
       <div className="container px-6 mx-auto">
         <h2 className="mb-12 font-serif text-4xl font-bold text-center text-gray-800 font-poppins">
           Nossa Localização 📍
