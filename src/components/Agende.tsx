@@ -7,7 +7,7 @@ import AppointmentForm from '@/components/Appointments/AppointmentForm';
 import { TimeSlot } from '@/types/appointment';
 import { LoadingSpinner} from './Loading/LoadingSpinner';
 import { ToastContainer, toast, Bounce  } from 'react-toastify';
-import * as motion from "motion/react-client"
+/* import * as motion from "motion/react-client" */
 
 export default function Agende() {
 
