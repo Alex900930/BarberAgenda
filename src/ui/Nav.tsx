@@ -37,7 +37,9 @@ export default function Nav() {
                 width={32}
                 height={32}
             />
-            <span className="font-serif text-xl font-bold">Danilo&apos;s Barbearia Elite</span>
+            <h3 className="font-serif text-xl font-bold uppercase">Danilo&apos;s 
+            <span className="text-transparent uppercase tracking-wide bg-clip-text bg-gradient-to-r from-[#f97316] via-[#e88b49] to-[#ce966e] drop-shadow-lg"> Barbearia Elite</span></h3>
+            
           </div>
           <div className="hidden space-x-6 md:flex">
             <a href="#agenda" className="font-serif hover:text-gray-300">Agendar</a>

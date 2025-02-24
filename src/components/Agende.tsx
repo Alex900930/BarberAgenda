@@ -114,7 +114,7 @@ export default function Agende() {
       >
             <div className="container px-4 mx-auto">
             <h2 className="mb-12 font-serif text-4xl font-extrabold text-center text-transparent uppercase tracking-wide bg-clip-text bg-gradient-to-r from-[#222831] via-[#393E46] to-[#00ADB5] drop-shadow-lg">
-        Agende seu Horário
+        Agende <span className='text-transparent uppercase tracking-wide bg-clip-text bg-gradient-to-r from-[#f97316] via-[#e88b49] to-[#ce966e] drop-shadow-lg'>seu Horário</span>
       </h2>
 
 <div className="grid grid-cols-1 gap-8 md:grid-cols-2">

@@ -30,8 +30,8 @@ export default function QuemSomos() {
           </div>
 
           <div className="mt-12 text-center md:text-left lg:col-span-1">
-                <h2 className="mb-4 font-serif text-4xl font-bold text-gray-800 transition duration-500 transform font-poppins hover:scale-105">
-                    Nossa História ✨
+                <h2 className="mb-4 font-serif text-4xl font-bold text-gray-800 uppercase transition duration-500 transform font-poppins hover:scale-105">
+                    Nossa <span className="text-transparent uppercase tracking-wide bg-clip-text bg-gradient-to-r from-[#f97316] via-[#e88b49] to-[#ce966e] drop-shadow-lg">História</span> ✨
                 </h2>
                 <p className="mb-4 text-xl font-semibold transition duration-500 transform text-primary hover:scale-105">
                     Começa em 2018 ⏳

@@ -15,8 +15,8 @@ export default function Localizacao() {
             >
                <section id="localizacao" className="py-16 bg-gradient-to-b from-white via-[#F8F9FA] to-[#DDE1E7]">
       <div className="container px-6 mx-auto">
-        <h2 className="mb-12 font-serif text-4xl font-bold text-center text-gray-800 font-poppins">
-          Nossa Localização 📍
+        <h2 className="mb-12 font-serif text-4xl font-bold text-center text-gray-800 uppercase font-poppins">
+          Nossa <span className="text-transparent uppercase tracking-wide bg-clip-text bg-gradient-to-r from-[#f97316] via-[#e88b49] to-[#ce966e] drop-shadow-lg">Localização</span> 📍
         </h2>
         <div className="max-w-2xl p-8 mx-auto rounded-lg shadow-lg bg-gray-50">
           {/* Dirección */}
