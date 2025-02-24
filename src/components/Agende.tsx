@@ -1,12 +1,21 @@
 "use client"
 
 import {useState } from 'react';
-import MyDatePicker from "@/components/ui/DaysPicker";
-import Button from '@/components/Button/Button';
-import AppointmentForm from '@/components/Appointments/AppointmentForm';
-import { TimeSlot } from '@/types/appointment';
+import MyDatePicker from '@/components/ui/DaysPicker'
+import Button from '@/components/Button/Button'
+import AppointmentForm from "@/components/Appointments/AppointmentForm"
+import { TimeSlot } from "@/types/appointment"
 import { LoadingSpinner} from './Loading/LoadingSpinner';
 import { ToastContainer, toast, Bounce  } from 'react-toastify';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
+
 /* import * as motion from "motion/react-client" */
 
 export default function Agende() {
@@ -17,6 +26,7 @@ export default function Agende() {
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showPastDateDialog, setShowPastDateDialog] = useState(false);
 
   const handleDateSelect = async (date: Date | undefined) => {
     setSelectedDate(date);
@@ -24,7 +34,14 @@ export default function Agende() {
     setShowForm(false);
     setError('');
 
+    const fechaHoje = new Date();
+
     if (date) {
+      if(date.getDate() < fechaHoje.getDate() || date.getMonth() < fechaHoje.getMonth()){
+        console.log('Data menor que a data de hoje');
+        setShowPastDateDialog(true);
+        return;
+      }
       setLoading(true);
       try {
         const response = await fetch(`/api/available-slots?date=${date.toISOString()}`);
@@ -169,6 +186,21 @@ export default function Agende() {
     )}
   </div>
      </div>
+             <Dialog open={showPastDateDialog} onOpenChange={setShowPastDateDialog}>
+        
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Data inválida</DialogTitle>
+            <DialogDescription>
+              Por favor, selecione uma data igual ou posterior à data de hoje.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <DialogFooter>
+            <Button title='Aceptar' onClick={() => setShowPastDateDialog(false)}/>
+          </DialogFooter>
+        </DialogContent>
+  </Dialog>
       </div> 
       <ToastContainer
         position="top-right"

@@ -13,8 +13,11 @@
     "@libsql/client": "^0.8.1",
     "@prisma/adapter-libsql": "^5.22.0",
     "@prisma/client": "^6.4.1",
-    "@radix-ui/react-slot": "^1.1.0",
+    "@radix-ui/react-dialog": "^1.1.6",
+    "@radix-ui/react-slot": "^1.1.2",
+    "class-variance-authority": "^0.7.1",
     "classnames": "^2.5.1",
+    "clsx": "^2.1.1",
     "dotenv": "^16.4.5",
     "framer-motion": "^11.18.2",
     "lucide-react": "^0.456.0",
@@ -27,6 +30,8 @@
     "react-slick": "^0.30.2",
     "react-toastify": "^11.0.3",
     "slick-carousel": "^1.8.1",
+    "tailwind-merge": "^3.0.2",
+    "tailwindcss-animate": "^1.0.7",
     "twilio": "^5.3.6"
   },
   "devDependencies": {
