@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ['www.freepik.es'], // Aquí agregas el dominio
+    domains: ['www.freepik.es', 'tailwindui.com'], // Aquí agregas el dominio
   },
 };
 

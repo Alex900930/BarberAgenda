@@ -2,10 +2,20 @@ import React from "react";
 import Image from "next/image";
 import { servicios } from "@/utils/servicios";
 import { Clock } from "lucide-react";
+import * as motion from "motion/react-client"
 
 export default function HeroServices() {
   return (
-    <div>
+    <motion.div
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{
+                    duration: 0.8,
+                    delay: 0.5,
+                    ease: [0, 0.71, 0.2, 1.01],
+                }}
+            >
+               <div>
       {/* Hero Section - Video de Fondo */}
       <section className="relative h-screen overflow-hidden">
         <video
@@ -62,5 +72,7 @@ export default function HeroServices() {
         </div>
       </section>
     </div>
+            </motion.div>
+   
   );
 }

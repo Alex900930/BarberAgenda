@@ -1,12 +1,21 @@
 import React from 'react';
 import { MessageCircle, Share2, Phone } from 'lucide-react';
-
+import * as motion from "motion/react-client"
 export default function Footer() {
   return (
-    <footer className="bg-black text-white py-8">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row items-center justify-between">
-            <div className="text-center md:text-left mb-4 md:mb-0">
+     <motion.div
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{
+                    duration: 0.8,
+                    delay: 0.5,
+                    ease: [0, 0.71, 0.2, 1.01],
+                }}
+            >
+                <footer className="py-8 text-white bg-black">
+        <div className="container px-4 mx-auto">
+          <div className="flex flex-col items-center justify-between md:flex-row">
+            <div className="mb-4 text-center md:text-left md:mb-0">
               <h3 className="text-xl font-bold">Danilo&apos;s Barbearia Elite</h3>
               <p className="text-gray-400">Qualidade e estilo desde 2020</p>
             </div>
@@ -24,5 +33,7 @@ export default function Footer() {
           </div>
         </div>
       </footer>
+            </motion.div>
+  
   )
 }

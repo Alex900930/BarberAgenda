@@ -7,6 +7,7 @@ import AppointmentForm from '@/components/Appointments/AppointmentForm';
 import { TimeSlot } from '@/types/appointment';
 import { LoadingSpinner} from './Loading/LoadingSpinner';
 import { ToastContainer, toast, Bounce  } from 'react-toastify';
+import * as motion from "motion/react-client"
 
 export default function Agende() {
 
@@ -106,19 +107,15 @@ export default function Agende() {
     }
   };
   
- 
   return (
-<section
-  id="agenda"
-  className="sm:py-16 pt-[29rem] bg-gradient-to-b from-white via-[#F8F9FA] to-[#DDE1E7]"
->
-
-
-
-      <div className="container px-4 mx-auto">
-      <h2 className="mb-12 font-serif text-4xl font-extrabold text-center text-transparent uppercase tracking-wide bg-clip-text bg-gradient-to-r from-[#222831] via-[#393E46] to-[#00ADB5] drop-shadow-lg">
-  Agende seu Horário
-</h2>
+      <section
+        id="agenda"
+        className="sm:py-16 pt-12 pb-12  bg-gradient-to-b from-white via-[#F8F9FA] to-[#DDE1E7]"
+      >
+            <div className="container px-4 mx-auto">
+            <h2 className="mb-12 font-serif text-4xl font-extrabold text-center text-transparent uppercase tracking-wide bg-clip-text bg-gradient-to-r from-[#222831] via-[#393E46] to-[#00ADB5] drop-shadow-lg">
+        Agende seu Horário
+      </h2>
 
 <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
 
@@ -171,78 +168,23 @@ export default function Agende() {
       </>
     )}
   </div>
-
-</div>
-
-
-
-     {/*    <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-          <div className="p-6 rounded-lg shadow-lg bg-gray-50">
-            <h3 className="mb-4 text-xl font-semibold">Selecione uma Data</h3>
-            <div className="calendar-container">
-              <MyDatePicker onDateSelect={handleDateSelect} />
-            </div>
-          </div>
-          <div className="p-6 rounded-lg shadow-lg bg-gray-50">
-            {loading ? (
-              <div className="py-8 text-center">
-                <LoadingSpinner />
-              </div>
-            ) : error ? (
-              <div className="py-8 text-center text-red-600">
-                <p>{error}</p>
-              </div>
-            ) : showForm ? (
-              <div>
-                <h3 className="mb-4 text-xl font-semibold">Complete sus datos</h3>
-                <AppointmentForm
-                  selectedDate={selectedDate!}
-                  selectedTime={selectedTime!}
-                  onSuccess={handleAppointmentSuccess}
-                  onCancel={() => setShowForm(false)}
-                />
-
-              </div>
-            ) : (
-              <>
-                <h3 className="mb-4 text-xl font-semibold">
-                  {selectedDate 
-                    ? "Horários Disponíveis" 
-                    : "Seleccione una fecha para ver horarios disponibles"}
-                </h3>
-                <div className="grid grid-cols-3 gap-2">
-                  {availableSlots.map((slot) => (
-                    <Button
-                      key={slot.time}
-                      title={slot.time}
-                      disabled={!slot.available}
-                      selected={selectedTime === slot.time}
-                      onClick={() => handleTimeSelect(slot.time)}
-                    />
-                  ))}
-                </div>
-              </>
-            )}
-          </div>
-        </div>
-        */}
+     </div>
       </div> 
-
-      
-      
       <ToastContainer
-position="top-right"
-autoClose={5000}
-hideProgressBar={false}
-newestOnTop={false}
-closeOnClick={false}
-rtl={false}
-pauseOnFocusLoss
-draggable
-pauseOnHover
-theme="colored"
-transition={Bounce}
-/>
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+        transition={Bounce}
+        />
     </section>
+           
+
   );
 }

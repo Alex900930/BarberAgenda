@@ -1,9 +1,19 @@
 import React from "react";
 import Image from "next/image";
+import * as motion from "motion/react-client"
 
 export default function QuemSomos() {
   return (
-    <section id="quem-somos" className="py-16 bg-gray-100">
+    <motion.div
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{
+                    duration: 0.8,
+                    delay: 0.5,
+                    ease: [0, 0.71, 0.2, 1.01],
+                }}
+            >
+               <section id="quemsomos" className="py-16 bg-gray-100">
       <div className="container px-6 mx-auto">
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-2">
           {/* Imagen que ocupa 2 columnas en pantallas grandes */}
@@ -41,5 +51,7 @@ export default function QuemSomos() {
         </div>
       </div>
     </section>
+            </motion.div>
+   
   );
 }

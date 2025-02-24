@@ -1,3 +1,4 @@
+"use client"
 import Agende from "@/components/Agende";
 import Footer from "@/ui/Footer";
 import Header from "@/ui/Header";
@@ -6,18 +7,21 @@ import Nav from "@/ui/Nav";
 import QuemSomos from "@/ui/Quemsomos";
 import Servicios from "@/ui/Servicios";
 
-
 export default function Home() {
 
   return (
     <div className="min-h-screen bg-white">
+     
       <Nav />
       <Header/>
       <Agende />
-      <Servicios />
+       <Servicios />
       <QuemSomos />
       <Localizacion />
-      <Footer /> 
+        <Footer />
+      
+      
+    
     </div>
   );
 }
