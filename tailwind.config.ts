@@ -9,8 +9,20 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        'blueMy': {
+                '50': '#eefaff',
+                '100': '#d9f4ff',
+                '200': '#bbecff',
+                '300': '#8ce2ff',
+                '400': '#56cfff',
+                '500': '#2fb4ff',
+                '600': '#1996f7',
+                '700': '#1283ed',
+                '800': '#1564b8',
+                '900': '#175691',
+                '950': '#133558',
+            },
+
       },
     },
   },

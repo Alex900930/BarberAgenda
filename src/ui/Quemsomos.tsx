@@ -1,17 +1,15 @@
 import React from "react";
 import Image from "next/image";
-import * as motion from "motion/react-client"
+import { motion } from "motion/react";
 
 export default function QuemSomos() {
   return (
-    <motion.div
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{
-                    duration: 0.8,
-                    delay: 0.5,
-                    ease: [0, 0.71, 0.2, 1.01],
-                }}
+    <div>
+         <motion.div
+               initial={{ opacity: 0, y: 50 }} // Animación inicial
+               whileInView={{ opacity: 1, y: 0 }} // Animación al entrar en vista
+               transition={{ duration: 0.5 }} // Duración de la animación
+               viewport={{ once: true }} // Para que solo se anime una vez
             >
                <section id="quemsomos" className="py-16 bg-gradient-to-b from-white via-[#F8F9FA] to-[#DDE1E7]">
       <div className="container px-6 mx-auto">
@@ -30,9 +28,15 @@ export default function QuemSomos() {
           </div>
 
           <div className="mt-12 text-center md:text-left lg:col-span-1">
-                <h2 className="mb-4 font-serif text-4xl font-bold text-gray-800 uppercase transition duration-500 transform font-poppins hover:scale-105">
+                <motion.h2 
+                 className="mb-4 font-serif text-4xl font-bold text-gray-800 uppercase transition duration-500 transform font-poppins hover:scale-105"
+                 initial={{ y: -150 }} // Animación inicial
+                 whileInView={{ opacity: 1, y: 0 }} // Animación al entrar en vista
+                 transition={{ duration: 0.5 }} // Duración de la animación
+                 viewport={{ once: true }} // Para que solo se anime una v
+                 >
                     Nossa <span className="text-transparent uppercase tracking-wide bg-clip-text bg-gradient-to-r from-[#f97316] via-[#e88b49] to-[#ce966e] drop-shadow-lg">História</span> ✨
-                </h2>
+                </motion.h2>
                 <p className="mb-4 text-xl font-semibold transition duration-500 transform text-primary hover:scale-105">
                     Começa em 2018 ⏳
                 </p>
@@ -52,6 +56,8 @@ export default function QuemSomos() {
       </div>
     </section>
             </motion.div>
+    </div>
+   
    
   );
 }

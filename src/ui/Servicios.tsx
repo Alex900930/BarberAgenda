@@ -1,21 +1,20 @@
-import React from "react";
+
 import Image from "next/image";
 import { servicios } from "@/utils/servicios";
 import { Clock } from "lucide-react";
-import * as motion from "motion/react-client"
+import { motion } from "motion/react";
 
 export default function HeroServices() {
+
   return (
-    <motion.div
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{
-                    duration: 0.8,
-                    delay: 0.5,
-                    ease: [0, 0.71, 0.2, 1.01],
-                }}
+    <div>
+       <motion.div
+                 initial={{ opacity: 0, y: 50 }} // Animación inicial
+                 whileInView={{ opacity: 1, y: 0 }} // Animación al entrar en vista
+                 transition={{ duration: 0.5 }} // Duración de la animación
+                 viewport={{ once: true }} // Para que solo se anime una vez
             >
-               <div>
+     <div>
       {/* Hero Section - Video de Fondo */}
       <section className="relative h-screen overflow-hidden">
         <video
@@ -31,7 +30,13 @@ export default function HeroServices() {
         </video>
         <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50"></div>
         <div className="relative z-10 py-32 text-center text-white">
-          <h1 className="font-serif text-5xl font-bold uppercase">Bem-vindo ao <span className="text-transparent uppercase tracking-wide bg-clip-text bg-gradient-to-r from-[#f97316] via-[#e88b49] to-[#ce966e] drop-shadow-lg">Melhor Corte</span></h1>
+          <motion.h1 
+           className="font-serif text-5xl font-bold uppercase"
+           initial={{ y: -150 }} // Animación inicial
+           whileInView={{ opacity: 1, y: 0 }} // Animación al entrar en vista
+           transition={{ duration: 0.5 }} // Duración de la animación
+           viewport={{ once: true }} // Para que solo se anime una v
+           >Bem-vindo ao <span className="text-transparent uppercase tracking-wide bg-clip-text bg-gradient-to-r from-[#f97316] via-[#e88b49] to-[#ce966e] drop-shadow-lg">Melhor Corte</span></motion.h1>
           <p className="mt-4 text-xl">Transforme seu estilo com os nossos serviços</p>
         </div>
       </section>
@@ -39,8 +44,14 @@ export default function HeroServices() {
       {/* Servicios Section */}
       <section id="servicos" className="py-16 bg-gray-900">
         <div className="container px-4 mx-auto">
-          <h2 className="mb-12 font-serif text-3xl font-bold text-center text-white uppercase">Tudo que a Barbearia 
-          <span className="text-transparent uppercase tracking-wide bg-clip-text bg-gradient-to-r from-[#f97316] via-[#e88b49] to-[#ce966e] drop-shadow-lg"> pode te oferecer</span></h2>
+          <motion.h2 
+           className="mb-12 font-serif text-3xl font-bold text-center text-white uppercase"
+           initial={{ y: -150 }} // Animación inicial
+           whileInView={{ opacity: 1, y: 0 }} // Animación al entrar en vista
+           transition={{ duration: 0.5 }} // Duración de la animación
+           viewport={{ once: true }} // Para que solo se anime una v
+           >Tudo que a Barbearia 
+          <span className="text-transparent uppercase tracking-wide bg-clip-text bg-gradient-to-r from-[#f97316] via-[#e88b49] to-[#ce966e] drop-shadow-lg"> pode te oferecer</span></motion.h2>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
             {servicios.map((servico, index) => (
               <div
@@ -74,6 +85,8 @@ export default function HeroServices() {
       </section>
     </div>
             </motion.div>
+    </div>
+   
    
   );
 }

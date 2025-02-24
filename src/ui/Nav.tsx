@@ -18,17 +18,18 @@ export default function Nav() {
   ]
 
   return (
-       <motion.div
-                  initial={{ opacity: 0, scale: 0.5 }}
-                  animate={{ opacity: 1, scale: 1 }}
+      
+       <nav className="fixed top-0 z-50 w-full py-4 text-white bg-black">
+         <motion.div
+                  initial={{ y: -250}}
+                  animate={{ y: -10 }}
                   transition={{
                       duration: 0.8,
-                      delay: 0.5,
-                      ease: [0, 0.71, 0.2, 1.01],
+                      delay: 0.2
                   }}
               >
-                 <nav className="fixed top-0 z-50 w-full py-4 text-white bg-black">
-        <div className="container flex items-center justify-between px-4 mx-auto">
+
+<div className="container flex items-center justify-between px-4 mx-auto">
           <div className="flex items-center space-x-2">
             <Image
                 className="w-8 h-8 text-white"
@@ -103,8 +104,10 @@ export default function Nav() {
             </div>
           </DialogPanel>
         </Dialog>
-      </nav>
+      
+
               </motion.div>
+        </nav>      
      
   )
 }

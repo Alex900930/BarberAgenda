@@ -1,16 +1,13 @@
 import React from 'react';
 import { MessageCircle, Share2, Phone } from 'lucide-react';
-import * as motion from "motion/react-client"
+import { motion } from "motion/react";
 export default function Footer() {
   return (
      <motion.div
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{
-                    duration: 0.8,
-                    delay: 0.5,
-                    ease: [0, 0.71, 0.2, 1.01],
-                }}
+     initial={{ opacity: 0, y: 50 }} // Animación inicial
+     whileInView={{ opacity: 1, y: 0 }} // Animación al entrar en vista
+     transition={{ duration: 0.5 }} // Duración de la animación
+     viewport={{ once: true }} // Para que solo se anime una vez
             >
                 <footer className="py-8 text-white bg-black">
         <div className="container px-4 mx-auto">

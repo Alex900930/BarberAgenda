@@ -16,7 +16,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 
-/* import * as motion from "motion/react-client" */
+import { motion } from "motion/react";
 
 export default function Agende() {
 
@@ -125,14 +125,29 @@ export default function Agende() {
   };
   
   return (
-      <section
+      <motion.section
         id="agenda"
         className="sm:py-16 pt-12 pb-12  bg-gradient-to-b from-white via-[#F8F9FA] to-[#DDE1E7]"
+        initial={{ opacity: 0, y: 50 }} // Animación inicial
+        whileInView={{ opacity: 1, y: 0 }} // Animación al entrar en vista
+        transition={{ duration: 0.5, delay: 5.5}} // Duración de la animación
+        viewport={{ once: true }} // Para que solo se anime una vez
       >
             <div className="container px-4 mx-auto">
-            <h2 className="mb-12 font-serif text-4xl font-extrabold text-center text-transparent uppercase tracking-wide bg-clip-text bg-gradient-to-r from-[#222831] via-[#393E46] to-[#00ADB5] drop-shadow-lg">
-        Agende <span className='text-transparent uppercase tracking-wide bg-clip-text bg-gradient-to-r from-[#f97316] via-[#e88b49] to-[#ce966e] drop-shadow-lg'>seu Horário</span>
-      </h2>
+       <motion.h2 className="mb-12 font-serif text-4xl font-extrabold text-center text-transparent uppercase tracking-wide bg-clip-text bg-gradient-to-r from-[#222831] via-[#393E46] to-[#00ADB5] drop-shadow-lg"
+        initial={{ y: -150 }} // Animación inicial
+        whileInView={{ opacity: 1, y: 0 }} // Animación al entrar en vista
+        transition={{ duration: 0.5 }} // Duración de la animación
+        viewport={{ once: true }} // Para que solo se anime una v
+       >
+        Agende 
+        <motion.span 
+                 className='text-transparent uppercase tracking-wide bg-clip-text bg-gradient-to-r from-[#f97316] via-[#e88b49] to-[#ce966e] drop-shadow-lg'
+                 initial={{x: '100vw'}}
+                 animate= {{x: 0}}
+                 transition={{type: 'spring', stiffness: 120}}
+                 > seu Horário</motion.span>
+      </motion.h2>
 
 <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
 
@@ -215,7 +230,7 @@ export default function Agende() {
         theme="colored"
         transition={Bounce}
         />
-    </section>
+    </motion.section>
            
 
   );
