@@ -17,11 +17,9 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-
-    console.log('Campos que llegan aqui:', body);
     
     // Validación de campos requeridos
-    const requiredFields = ['date', 'time', 'clientName', 'clientEmail', 'clientPhone'];
+    const requiredFields = ['date', 'time', 'clientName', 'clientPhone'];
     const missingFields = requiredFields.filter(field => !body[field]);
     
     if (missingFields.length > 0) {

@@ -102,7 +102,7 @@ const fetchAvailableSlots = async (date: Date) => {
             body: JSON.stringify({
               date: date.toISOString(),
               time,
-              clientName: "Dueño de la Barbería",
+              clientName: "Dono da Barbearia",
               clientEmail: "owner@barberia.com",
               clientPhone: process.env.OWNER_PHONE_NUMBER || '+5585989329627',
               isOwnerReservation: true

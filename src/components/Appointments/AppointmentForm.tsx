@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 
+
 interface AppointmentFormProps {
   selectedDate: Date;
   selectedTime: string;
@@ -47,19 +48,16 @@ export default function AppointmentForm({
 
   const formatPhoneNumber = (phone: string) => {
     try {
-      console.log('Número de teléfono original:', phone);
+      // Eliminar todo excepto números
+      const cleaned = phone.replace(/\D/g, '');
       
-      // Eliminar todos los caracteres no numéricos
-      let cleaned = phone.replace(/\D/g, '');
-      console.log('Número limpio:', cleaned);
-      
-      // Asegurarse de que tenga el código de país
-      if (!cleaned.startsWith('55')) {
-        cleaned = '55' + cleaned;
+      // Si ya incluye código de país, no agregar
+      if (cleaned.startsWith('55')) {
+        return cleaned;
       }
-      console.log('Número final formateado:', cleaned);
       
-      return cleaned;
+      // Agregar código de país si es necesario
+      return `55${cleaned}`;
     } catch (error) {
       console.error('Error al formatear teléfono:', error);
       return '';
@@ -69,12 +67,12 @@ export default function AppointmentForm({
   const createClientMessage = () => {
     try {
       const formattedDate = formatDate(selectedDate);
-      const message = `¡Hola! He confirmado mi cita en la barbería:
-- Nombre: ${formData.clientName}
-- Fecha: ${formattedDate}
+      const message = `Olá! Gostaria de confirmar meu horário agendado::
+- Nome: ${formData.clientName}
+- Data: ${formattedDate}
 - Hora: ${selectedTime}
 
-¡Gracias!`;
+¡Obrigado(a)!`;
       
       console.log('Mensaje creado:', message);
       return message;
@@ -99,7 +97,9 @@ export default function AppointmentForm({
         throw new Error('Datos inválidos para crear URL de WhatsApp');
       }
 
-      const url = `https://wa.me/${formattedPhone}?text=${encodeURIComponent(message)}`;
+      console.log('URL DE WHATSAPP:', process.env.OWNER_PHONE_NUMBER);
+
+      const url = `https://wa.me/${process.env.NEXT_PUBLIC_OWNER_PHONE_NUMBER}?text=${encodeURIComponent(message)}`;
       console.log('URL de WhatsApp generada:', url);
       return url;
     } catch (error) {
@@ -155,7 +155,7 @@ export default function AppointmentForm({
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
         <label htmlFor="clientName" className="block text-sm font-medium text-gray-700">
-          Nombre
+          Nome
         </label>
         <input
           id="clientName"
@@ -169,7 +169,7 @@ export default function AppointmentForm({
 
       <div>
         <label htmlFor="clientEmail" className="block text-sm font-medium text-gray-700">
-          Email
+          Email(opcional)
         </label>
         <input
           id="clientEmail"

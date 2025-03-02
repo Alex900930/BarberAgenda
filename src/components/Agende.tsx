@@ -127,7 +127,7 @@ export default function Agende() {
           date: appointmentDate.toISOString(),
           time: selectedTime,
           clientName: clientInfo.name,
-          clientEmail: clientInfo.email,
+          clientEmail: clientInfo.email || '',
           clientPhone: clientInfo.phoneNumber
         })
       });
@@ -142,14 +142,13 @@ export default function Agende() {
       const formattedDate = `${appointmentDate.toISOString().split("T")[0]} ${selectedTime}`;
       
       const whatsappMessage = `Olá! Gostaria de confirmar meu horário agendado:
-  Fecha: ${formattedDate}
-  Nombre: ${clientInfo.name}
-  Email: ${clientInfo.email}
-  Teléfono: ${clientInfo.phoneNumber}`;
+   Fecha: ${formattedDate}
+   Nombre: ${clientInfo.name}
+   Email: ${clientInfo.email}
+   Teléfono: ${clientInfo.phoneNumber}`;
   
       const encodedMessage = encodeURIComponent(whatsappMessage);
-      const whatsappUrl = `https://wa.me/${process.env.OWNER_PHONE_NUMBER}?text=${encodedMessage}`;
-      
+      const whatsappUrl = `https://wa.me/${process.env.NEXT_PUBLIC_OWNER_PHONE_NUMBER}?text=${encodedMessage}`;
       // Abrir en nueva pestaña
       const newWindow = window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
       if (newWindow) newWindow.opener = null;
@@ -171,7 +170,7 @@ export default function Agende() {
       setShowForm(false);
       setSelectedTime(undefined);
        // Actualizar la página completa
-       window.location.reload();
+       /* window.location.reload(); */
   
     } catch (error) {
       console.error("Error en el proceso:", error);
