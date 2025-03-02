@@ -21,8 +21,43 @@ model Appointment {
   clientName  String
   clientEmail String
   clientPhone String
+  isOwnerReservation Boolean @default(false) // Nuevo campo
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   @@map("appointments")
+}
+model DisabledHour {
+  id      String   @id @default(uuid())
+  date    String   @unique
+  hours   String[]
+
+  @@map("disabledhour")
+}
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  password      String     // Almacenará el hash de la contraseña
+  role          Role      @default(USER)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  sessions      Session[]
+
+  @@map("users")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model Session {
+  id           String   @id @default(uuid())
+  sessionToken String   @unique
+  userId       String
+  user         User     @relation(fields: [userId], references: [id])
+  expires      DateTime
+
+  @@map("sessions")
 }

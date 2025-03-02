@@ -62,9 +62,7 @@ export default function HeroServices() {
                   <Image
                     src={servico.imagem}
                     alt={`Imagem de ${servico.nome}`}
-                    layout="responsive"
-                    width={400}
-                    height={250}
+                    fill
                     className="object-cover rounded-md"
                   />
                   <div className="absolute top-0 left-0 w-full h-full bg-black rounded-md opacity-30"></div>

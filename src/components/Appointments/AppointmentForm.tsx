@@ -161,7 +161,7 @@ export default function AppointmentForm({
           id="clientName"
           type="text"
           required
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
           value={formData.clientName}
           onChange={handleInputChange}
         />
@@ -174,7 +174,7 @@ export default function AppointmentForm({
         <input
           id="clientEmail"
           type="email"
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
           value={formData.clientEmail}
           onChange={handleInputChange}
         />
@@ -189,19 +189,19 @@ export default function AppointmentForm({
           type="text"
           required
           title="Ingrese un número de teléfono válido"
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
           value={formData.clientPhone}
           onChange={handleInputChange}
         />
       </div>
 
       {error && (
-        <div className="text-red-600 text-sm bg-red-50 p-3 rounded-md">
+        <div className="p-3 text-sm text-red-600 rounded-md bg-red-50">
           {error}
         </div>
       )}
 
-      <div className="flex space-x-4 pt-4">
+      <div className="flex pt-4 space-x-4">
         <button
           type="submit"
           disabled={loading}
@@ -214,7 +214,7 @@ export default function AppointmentForm({
         <button
           type="button"
           onClick={onCancel}
-          className="flex-1 justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          className="justify-center flex-1 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         >
           Cancelar
         </button>

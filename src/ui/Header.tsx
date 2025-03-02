@@ -1,45 +1,69 @@
 import classnames from 'classnames';
-import * as motion from "motion/react-client"
-
+import { motion, AnimatePresence } from "framer-motion"
 import Image from 'next/image';
 
-export default function Header() {
-    return (
-      <motion.div
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{
-                duration: 1.5,
-                delay: 2,
-                ease: [0, 0.71, 0.2, 1.01],
-            }}
-        >
-        <section
-        className={classnames(
-          'pt-24 pb-12 text-white w-full bg-cover bg-center bg-no-repeat relative font-serif',
-          {
-            'sm:h-[750px] h-[500px]': true,
-          }
-        )}
-        style={{
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-        }}
-      >
-        <Image
-          src="/assets/img/BannerBarberia.png"
-          alt="Banner Image"
-          fill
-          className="hidden object-cover sm:block"
-        />
-        <Image
-          src="/assets/img/BanerBarberiaMobile.png"
-          alt="Banner Image"
-          fill
-          className="block object-cover sm:hidden"
-        />
-      </section>
-      </motion.div>
-    );
+const headerVariants = {
+  hidden: { opacity: 0, scale: 0.95 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 1.2,
+      delay: 0.5,
+      ease: "easeOut"
+    }
   }
+}
+
+const imageVariants = {
+  hidden: { scale: 1.1 },
+  visible: {
+    scale: 1,
+    transition: {
+      duration: 1.5,
+      ease: "easeOut"
+    }
+  }
+}
+
+export default function Header() {
+  return (
+    <motion.section
+      variants={headerVariants}
+      initial="hidden"
+      animate="visible"
+      className={classnames(
+        'pt-24 pb-12 text-white w-full bg-cover bg-center bg-no-repeat relative font-serif',
+        'sm:h-[750px] h-[500px]'
+      )}
+    >
+      <AnimatePresence mode="sync">
+        <motion.div
+          key="desktop-banner"
+          variants={imageVariants}
+          className="hidden sm:block"
+        >
+          <Image
+            src="/assets/img/BannerBarberia.png"
+            alt="Banner Image"
+            fill
+            className="object-cover"
+          />
+        </motion.div>
+
+        <motion.div
+          key="mobile-banner"
+          variants={imageVariants}
+          className="block sm:hidden"
+        >
+          <Image
+            src="/assets/img/BanerBarberiaMobile.png"
+            alt="Banner Image"
+            fill
+            className="object-cover"
+          />
+        </motion.div>
+      </AnimatePresence>
+    </motion.section>
+  );
+}

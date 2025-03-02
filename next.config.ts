@@ -2,7 +2,12 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ['www.freepik.es', 'tailwindui.com'], // Aquí agregas el dominio
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**', // Permite todas las fuentes
+      },
+    ],
   },
 };
 

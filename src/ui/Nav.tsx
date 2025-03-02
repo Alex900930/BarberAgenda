@@ -3,111 +3,220 @@ import { useState } from 'react';
 import Logo1 from "../../public/assets/img/Logo1.png";
 import Image from 'next/image';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import { Dialog, DialogPanel } from '@headlessui/react';
-import * as motion from "motion/react-client"
+import { Dialog } from '@headlessui/react';
+import { motion, AnimatePresence } from "framer-motion"
 
-export default function Nav() {
+const navVariants = {
+  hidden: { y: -100, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      type: "spring",
+      stiffness: 120,
+      damping: 20,
+      delay: 0.3
+    }
+  }
+}
 
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  
+const menuItemVariants = {
+  hidden: { x: 50, opacity: 0 },
+  visible: (i: number) => ({
+    x: 0,
+    opacity: 1,
+    transition: {
+      delay: i * 0.1,
+      type: "spring",
+      stiffness: 100
+    }
+  })
+}
+
+const mobileMenuVariants = {
+  hidden: { x: '100%' },
+  visible: {
+    x: 0,
+    transition: {
+      type: 'tween',
+      ease: 'easeInOut',
+      duration: 0.3
+    }
+  },
+  exit: {
+    x: '100%',
+    transition: {
+      type: 'tween',
+      ease: 'easeInOut',
+      duration: 0.2
+    }
+  }
+}
+
+interface NavProps {
+  setIsAdmin: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export default function Nav({ setIsAdmin  } : NavProps) {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   const navigation = [
     { name: 'Agendar', href: '#agenda' },
     { name: 'Serviços', href: '#servicos' },
     { name: 'Localização', href: '#localizacao' },
     { name: 'QuemSomos', href: '#quemsomos' },
-  ]
+    { name: 'Gestor', href: '#admin', isAdmin: true },
+  ];
+
+  const handleAdminToggle = () => {
+    setIsAdmin(prev => !prev);
+  };
 
   return (
-      
-       <nav className="fixed top-0 z-50 w-full py-4 text-white bg-black">
-         <motion.div
-                  initial={{ y: -250}}
-                  animate={{ y: -10 }}
-                  transition={{
-                      duration: 0.8,
-                      delay: 0.2
-                  }}
-              >
+    <motion.nav 
+      className="fixed top-0 z-50 w-full py-4 text-white bg-black"
+      variants={navVariants}
+      initial="hidden"
+      animate="visible"
+    >
+      <div className="container flex items-center justify-between px-4 mx-auto">
+        {/* Logo */}
+        <motion.div
+          whileHover={{ scale: 1.05 }}
+          className="flex items-center space-x-2 cursor-pointer"
+        >
+          <Image
+            className="w-8 h-8 text-white"
+            src={Logo1}
+            alt='Logo'
+            width={32}
+            height={32}
+          />
+          <h3 className="font-serif text-xl font-bold uppercase">
+            Danilo&apos;s 
+            <span className="text-transparent uppercase tracking-wide bg-clip-text bg-gradient-to-r from-[#f97316] via-[#e88b49] to-[#ce966e] drop-shadow-lg">
+              {' '}Barbearia Elite
+            </span>
+          </h3>
+        </motion.div>
 
-<div className="container flex items-center justify-between px-4 mx-auto">
-          <div className="flex items-center space-x-2">
-            <Image
-                className="w-8 h-8 text-white"
-                src={Logo1}
-                alt='Logo'
-                width={32}
-                height={32}
-            />
-            <h3 className="font-serif text-xl font-bold uppercase">Danilo&apos;s 
-            <span className="text-transparent uppercase tracking-wide bg-clip-text bg-gradient-to-r from-[#f97316] via-[#e88b49] to-[#ce966e] drop-shadow-lg"> Barbearia Elite</span></h3>
-            
-          </div>
-          <div className="hidden space-x-6 md:flex">
-            <a href="#agenda" className="font-serif hover:text-gray-300">Agendar</a>
-            <a href="#quemsomos" className="font-serif hover:text-gray-300">QuemSomos</a>
-            <a href="#servicos" className="font-serif hover:text-gray-300">Serviços</a>
-            <a href="#localizacao" className="font-serif hover:text-gray-300">Localização</a>
-          </div>
-          <div className="flex md:hidden">
-            <button
-              type="button"
-              onClick={() => {
-                console.log('mobileMenuOpen', mobileMenuOpen);
-                setMobileMenuOpen(true);
-              }}
-              className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
-            >
-              <span className="sr-only">Open main menu</span>
-              <Bars3Icon aria-hidden="true" className="text-white size-6" />
-            </button>
-          </div>
+        {/* Menú Desktop */}
+        <div className="hidden space-x-6 md:flex">
+          {navigation.map((item) => (
+            <motion.a
+            key={item.name}
+            href={item.href}
+            onClick={(e) => {
+              if (item.name === 'Gestor') {
+                e.preventDefault();
+                handleAdminToggle();
+              }
+            }}
+            className="relative font-serif hover:text-gray-300"
+            whileHover={{ 
+              scale: 1.05,
+              color: '#e88b49'
+            }}
+            transition={{ type: 'spring', stiffness: 300 }}
+          >
+            {item.name}
+          </motion.a>
+          ))}
         </div>
-        {/* Mobile menu, show/hide based on menu open state. */}
-        <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="md:hidden">
-          <div className="fixed inset-0 z-50" />
-          <DialogPanel className="fixed inset-y-0 right-0 z-50 w-full px-6 py-6 overflow-y-auto bg-white sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
-            <div className="flex items-center justify-between">
-              <a href="#" className="-m-1.5 p-1.5">
-                <span className="sr-only">Your Company</span>
-                <Image
-                  alt=""
-                  src={Logo1}
-                  className="w-auto h-8"
-                  width={32}
-                  height={32}
-                />
-              </a>
-              <button
-                type="button"
-                onClick={() => setMobileMenuOpen(false)}
-                className="-m-2.5 rounded-md p-2.5 text-gray-700"
-              >
-                <span className="sr-only">Close menu</span>
-                <XMarkIcon aria-hidden="true" className="size-6" />
-              </button>
-            </div>
-            <div className="flow-root mt-6">
-              <div className="-my-6 divide-y divide-gray-500/10">
-                <div className="py-6 space-y-2">
-                  {navigation.map((item) => (
-                    <a
-                      key={item.name}
-                      href={item.href}
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="block px-3 py-2 -mx-3 font-semibold text-gray-900 rounded-lg text-base/7 hover:bg-gray-50"
-                    >
-                      {item.name}
-                    </a>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </DialogPanel>
-        </Dialog>
-      
 
+        {/* Botón Mobile */}
+        <motion.div
+          className="flex md:hidden"
+          whileTap={{ scale: 0.95 }}
+        >
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen(true)}
+            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
+          >
+            <span className="sr-only">Abrir menú</span>
+            <Bars3Icon aria-hidden="true" className="text-white size-6" />
+          </button>
+        </motion.div>
+      </div>
+
+      {/* Menú Mobile */}
+      <AnimatePresence mode="sync">
+        {mobileMenuOpen && (
+          <Dialog static open={mobileMenuOpen} onClose={setMobileMenuOpen}>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"
+            />
+            
+            <motion.div
+              variants={mobileMenuVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              className="fixed inset-y-0 right-0 z-50 w-full max-w-sm bg-white"
+            >
+              <div className="flex items-center justify-between p-6">
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  className="flex items-center space-x-2"
+                >
+                  <Image
+                    src={Logo1}
+                    alt="Logo"
+                    width={32}
+                    height={32}
+                    className="w-8 h-8"
+                  />
+                  <span className="font-serif text-xl font-bold text-black">
+                    Barbearia Elite
+                  </span>
+                </motion.div>
+                
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="p-1 text-gray-700 rounded-full"
+                >
+                  <XMarkIcon className="size-6" />
+                </motion.button>
+              </div>
+
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                className="px-6 py-4"
+              >
+                {navigation.map((item, i) => (
+                  <motion.a
+                  key={item.name}
+                  variants={menuItemVariants}
+                  custom={i}
+                  href={item.href}
+                  onClick={(e) => {
+                    if (item.name === 'Gestor') {
+                      e.preventDefault();
+                      handleAdminToggle();
+                    }
+                    setMobileMenuOpen(false);
+                  }}
+                  className="block px-4 py-3 mb-2 -mx-3 text-lg font-semibold text-gray-900 rounded-lg hover:bg-gray-100"
+                  whileHover={{ 
+                    x: 10,
+                    transition: { type: 'spring', stiffness: 300 }
+                  }}
+                >
+                  {item.name}
+                </motion.a>
+                ))}
               </motion.div>
-        </nav>      
-     
+            </motion.div>
+          </Dialog>
+        )}
+      </AnimatePresence>
+    </motion.nav>
   )
 }

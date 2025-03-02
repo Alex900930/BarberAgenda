@@ -22,7 +22,7 @@ export default function QuemSomos() {
                 alt="Corte Masculino"
                 width={1000}
                 height={600}
-                className="object-cover w-full h-full rounded-lg shadow-lg"
+                className="object-cover rounded-lg shadow-lg"
               />
             </div>
           </div>
