@@ -133,49 +133,58 @@ const handleDisableHours = async (date: Date, slots: string[]) => {
       id="admin"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="min-h-screen bg-gradient-to-b from-white via-[#F8F9FA] to-[#DDE1E7] p-8 overflow-hidden"
+      className="min-h-screen bg-gradient-to-b from-white via-[#F8F9FA] to-[#DDE1E7] px-4 sm:px-8 py-6 overflow-hidden"
     >
-      <div className="max-w-6xl mx-auto">
-        <div className="p-6 bg-white shadow-2xl rounded-xl">
-          <h1 className="text-3xl font-serif text-center mb-8 text-transparent bg-clip-text bg-gradient-to-r from-[#222831] to-[#00ADB5]">
+      <div className="w-full max-w-6xl mx-auto">
+        <div className="p-4 bg-white rounded-lg shadow-lg sm:p-6 sm:shadow-2xl sm:rounded-xl">
+          <h1 className="text-2xl sm:text-3xl font-serif text-center mb-6 sm:mb-8 text-transparent bg-clip-text bg-gradient-to-r from-[#222831] to-[#00ADB5]">
             Painel Administrativo
           </h1>
 
-          <div className="border-2 border-[#f97316]/20 rounded-lg p-4 mb-8">
-          <DayPicker
-            locale={ptBR}
-            mode="single"
-            selected={selectedDate}
-            onSelect={setSelectedDate}
-            formatters={formatters}
-            modifiers={{
-              disabled: (date) => isDateDisabled(date),
-              booked: (date) => 
-                bookedDates.some(d => d.date === format(date, 'yyyy-MM-dd'))
-            }}
-            modifiersClassNames={{
-              booked: 'bg-red-100 hover:bg-red-100 text-red-500 font-medium',
-              disabled: 'opacity-50 cursor-not-allowed grayscale'
-            }}
-            className="text-gray-800 [--rdp-cell-size:40px]"
-            styles={{
-              head_cell: {
-                color: '#6b7280',
-                fontWeight: 500
-              },
-              day: {
-                borderRadius: '8px',
-                transition: 'all 0.2s'
-              }
-            }}
-          />
+          <div className="border border-[#f97316]/10 rounded-lg p-2 sm:p-4 mb-6 sm:mb-8 overflow-x-auto">
+            <DayPicker
+              locale={ptBR}
+              mode="single"
+              selected={selectedDate}
+              onSelect={setSelectedDate}
+              formatters={formatters}
+              modifiers={{
+                disabled: (date) => isDateDisabled(date),
+                booked: (date) => 
+                  bookedDates.some(d => d.date === format(date, 'yyyy-MM-dd'))
+              }}
+              modifiersClassNames={{
+                booked: 'bg-red-100 hover:bg-red-100 text-red-500 font-medium',
+                disabled: 'opacity-50 cursor-not-allowed grayscale'
+              }}
+              className="text-sm sm:text-base text-gray-800 [--rdp-cell-size:32px] sm:[--rdp-cell-size:40px]"
+              styles={{
+                head_cell: {
+                  color: '#6b7280',
+                  fontWeight: 500,
+                  fontSize: '0.875rem'
+                },
+                day: {
+                  borderRadius: '6px',
+                  transition: 'all 0.2s',
+                  fontSize: '0.875rem'
+                },
+                caption_label: {
+                  fontSize: '1rem'
+                },
+                nav_button: {
+                  width: '1.5rem',
+                  height: '1.5rem'
+                }
+              }}
+            />
           </div>
 
           {selectedDate && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="bg-gray-50 rounded-xl p-6 border border-[#f97316]/10"
+              className="bg-gray-50 rounded-lg sm:rounded-xl p-4 sm:p-6 border border-[#f97316]/10"
             >
               <TimeSlotPicker
                 selectedDate={selectedDate}
