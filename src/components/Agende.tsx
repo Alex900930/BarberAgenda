@@ -141,21 +141,21 @@ export default function Agende() {
       // 2. Redirigir a WhatsApp
       const formattedDate = `${appointmentDate.toISOString().split("T")[0]} ${selectedTime}`;
       
-      const whatsappMessage = `¡Hola! Quiero confirmar mi cita:
+      const whatsappMessage = `Olá! Gostaria de confirmar meu horário agendado:
   Fecha: ${formattedDate}
   Nombre: ${clientInfo.name}
   Email: ${clientInfo.email}
   Teléfono: ${clientInfo.phoneNumber}`;
   
       const encodedMessage = encodeURIComponent(whatsappMessage);
-      const whatsappUrl = `https://wa.me/${process.env.NEXT_PUBLIC_OWNER_PHONE_NUMBER}?text=${encodedMessage}`;
+      const whatsappUrl = `https://wa.me/${process.env.OWNER_PHONE_NUMBER}?text=${encodedMessage}`;
       
       // Abrir en nueva pestaña
       const newWindow = window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
       if (newWindow) newWindow.opener = null;
   
       // 3. Resetear estado
-      toast.success('¡Cita agendada correctamente!', {
+      toast.success('Horário agendado com sucesso!', {
         position: "top-right",
         autoClose: 5000,
         theme: "colored",
@@ -170,7 +170,8 @@ export default function Agende() {
       // Resetear formulario
       setShowForm(false);
       setSelectedTime(undefined);
-      location.reload();
+       // Actualizar la página completa
+       window.location.reload();
   
     } catch (error) {
       console.error("Error en el proceso:", error);

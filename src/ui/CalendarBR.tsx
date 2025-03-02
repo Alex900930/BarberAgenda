@@ -85,42 +85,42 @@ const fetchAvailableSlots = async (date: Date) => {
   // Manejar deshabilitación de horas
 
   // app/owner-page.tsx (o donde uses el TimeSlotPicker)
-const handleDisableHours = async (date: Date, slots: string[]) => {
-  try {
-    // Si es "all", obtener todos los slots del día
-    if (slots.includes('all')) {
-      const dateStr = format(date, 'yyyy-MM-dd');
-      const response = await fetch(`/api/available-slots?date=${dateStr}`);
-      const data = await response.json();
-      slots = data.map((slot: TimeSlot) => slot.time);
+  const handleDisableHours = async (date: Date, slots: string[]) => {
+    try {
+      if (slots.includes('all')) {
+        const dateStr = format(date, 'yyyy-MM-dd');
+        const response = await fetch(`/api/available-slots?date=${dateStr}`);
+        const data = await response.json();
+        slots = data.map((slot: TimeSlot) => slot.time);
+      }
+  
+      await Promise.all(
+        slots.map(async (time) => {
+          const response = await fetch('/api/appointments', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              date: date.toISOString(),
+              time,
+              clientName: "Dueño de la Barbería",
+              clientEmail: "owner@barberia.com",
+              clientPhone: process.env.OWNER_PHONE_NUMBER || '+5585989329627',
+              isOwnerReservation: true
+            })
+          });
+          
+          if (!response.ok) throw new Error('Error al crear reserva');
+        })
+      );
+      
+      // Actualizar la página completa
+      window.location.reload();
+  
+    } catch (error) {
+      console.error("Error:", error);
+      throw error;
     }
-
-    // Crear citas reservadas para el dueño
-    await Promise.all(
-      slots.map(async (time) => {
-        const response = await fetch('/api/appointments', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            date: date.toISOString(),
-            time,
-            clientName: "Dueño de la Barbería",
-            clientEmail: "owner@barberia.com",
-            clientPhone: process.env.OWNER_PHONE_NUMBER || '+5585989329627',
-            isOwnerReservation: true
-          })
-        });
-        
-        if (!response.ok) throw new Error('Error al crear reserva');
-      })
-    );
-    
-    // Actualizar estado local si es necesario
-  } catch (error) {
-    console.error("Error:", error);
-    throw error;
-  }
-};
+  };
 
   // Determinar si una fecha está deshabilitada
   const isDateDisabled = (date: Date) => {
