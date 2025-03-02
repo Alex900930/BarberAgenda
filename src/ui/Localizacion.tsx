@@ -26,7 +26,7 @@ export default function Localizacao() {
           <div className="flex items-center mb-4">
             <MapPin className="w-6 h-6 mr-2 text-primary" />
             <p className="text-lg text-gray-700">
-              Rua Da Palha, 123 - Canindé, CE
+            R. Euclídes Barroso, 671 - Centro, Canindé - CE, 62700-000
             </p>
           </div>
           {/* Horario */}
