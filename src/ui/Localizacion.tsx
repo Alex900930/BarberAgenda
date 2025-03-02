@@ -37,7 +37,7 @@ export default function Localizacao() {
           {/* Botón para ver en el mapa */}
           <div className="mt-6 text-center">
             <a
-              href="https://www.google.com/maps?q=Rua+Da+Palha,+123+-+Caninde,+CE"
+              href="https://www.google.com/maps?q=R.+Eucl%C3%ADdes+Barroso,+671+-+Centro,+Canind%C3%A9+-+CE,+62700-000"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block px-8 py-3 text-lg font-semibold text-white transition duration-300 transform rounded-lg bg-blueMy-600 bg-primary hover:scale-105"
